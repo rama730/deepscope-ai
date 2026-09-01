@@ -1,0 +1,58 @@
+# Supabase temp files (may contain secrets)
+supabase/.temp/
+.temp/testing1  testing2
+**/.temp/
+
+# Environment files
+.env*
+!.env.example
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.*
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+
+# Testing
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+*.pem
+.vercel
+
+# Code Reviews
+review_feedback.txt
+nb/review_feedback.txt
+
+# Generated files
+type_check_output*.txt
+nb/type_check_output*.txt

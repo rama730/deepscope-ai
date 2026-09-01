@@ -1,0 +1,100 @@
+"use client";
+
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+
+export default function ThemeToggle() {
+    const { theme, setTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
+        // Cycle: system -> light -> dark -> system
+        const newTheme = theme === 'system' ? 'light' : theme === 'light' ? 'dark' : 'system';
+
+        // @ts-ignore - View Transitions API is not yet in all TS definitions
+        if (!document.startViewTransition) {
+            setTheme(newTheme);
+            return;
+        }
+
+        const x = e.clientX;
+        const y = e.clientY;
+        const endRadius = Math.hypot(
+            Math.max(x, innerWidth - x),
+            Math.max(y, innerHeight - y)
+        );
+
+        // @ts-ignore
+        const transition = document.startViewTransition(() => {
+            setTheme(newTheme);
+        });
+
+        transition.ready.then(() => {
+            const clipPath = [
+                `circle(0px at ${x}px ${y}px)`,
+                `circle(${endRadius}px at ${x}px ${y}px)`,
+            ];
+
+            document.documentElement.animate(
+                {
+                    clipPath: theme === 'dark' ? [...clipPath].reverse() : clipPath,
+                },
+                {
+                    duration: 400,
+                    easing: "ease-in",
+                    pseudoElement: theme === 'dark' ? "::view-transition-old(root)" : "::view-transition-new(root)",
+                }
+            );
+        });
+    };
+
+    if (!mounted) {
+        return (
+            <button className="p-2 rounded-lg hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 transition-colors" aria-label="Toggle theme">
+                <div className="w-5 h-5" />
+            </button>
+        );
+    }
+
+    return (
+        <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 transition-colors group relative overflow-hidden"
+            aria-label="Toggle theme"
+            title={`Current: ${theme}`}
+        >
+            <div className="relative w-5 h-5 flex items-center justify-center">
+                {/* Sun (Light) */}
+                <Sun className={`absolute w-5 h-5 text-zinc-600 dark:text-zinc-400 transition-all duration-300 ${theme === 'light' ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-0 opacity-0'
+                    }`} />
+
+                {/* Moon (Dark) */}
+                <Moon className={`absolute w-5 h-5 text-zinc-600 dark:text-zinc-400 transition-all duration-300 ${theme === 'dark' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'
+                    }`} />
+
+                {/* Laptop (System) - Only visible when theme is system */}
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={`absolute w-5 h-5 text-zinc-600 dark:text-zinc-400 transition-all duration-300 ${theme === 'system' ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
+                        }`}
+                >
+                    <rect width="20" height="14" x="2" y="3" rx="2" />
+                    <line x1="2" x2="22" y1="21" y2="21" />
+                </svg>
+            </div>
+        </button>
+    );
+}

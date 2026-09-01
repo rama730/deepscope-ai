@@ -1,0 +1,42 @@
+# CODEOWNERS file
+# This file defines code owners for different parts of the repository.
+# When a PR is opened, owners will be automatically requested for review.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global owners (fallback for unlisted paths)
+* @rama730
+
+# Critical security and authentication code
+/nb/lib/auth/ @rama730
+/nb/lib/api/ @rama730
+/nb/app/api/auth/ @rama730
+/nb/app/api/v1/auth/ @rama730
+/nb/lib/env.ts @rama730
+/nb/lib/supabase/ @rama730
+
+# Database migrations and schema
+/nb/supabase/migrations/ @rama730
+/supabase/migrations/ @rama730
+/sql/ @rama730
+
+# Core API routes
+/nb/app/api/ @rama730
+
+# Configuration files
+/nb/package.json @rama730
+/nb/next.config.ts @rama730
+/nb/tsconfig.json @rama730
+/nb/jest.config.ts @rama730
+/nb/playwright.config.ts @rama730
+/.github/workflows/ @rama730
+
+# Security and infrastructure
+/.github/CODEOWNERS @rama730
+/SECURITY.md @rama730
+/LICENSE @rama730
+
+# Documentation (optional - can be less strict)
+/docs/ @rama730
+/README.md @rama730
+/CONTRIBUTING.md @rama730
+
