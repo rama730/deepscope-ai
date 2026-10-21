@@ -1,139 +1,113 @@
 # Security Policy
 
-## Supported Versions
-
-We actively support security updates for the following versions:
-
-| Version | Supported          |
-| ------- | ------------------ |
-| Latest  | :white_check_mark: |
-| < Latest| :x:                |
-
-## Reporting a Vulnerability
-
-We take security vulnerabilities seriously. If you discover a security vulnerability, please follow these steps:
-
-### 1. **Do NOT** create a public GitHub issue
-
-Security vulnerabilities should be reported privately to prevent exploitation.
-
-### 2. Report the vulnerability
-
-Please email security concerns to: **security@yourdomain.com**
-
-Alternatively, if you have access to the repository, you can use GitHub's [Private Vulnerability Reporting](https://github.com/your-org/nb-s/security/advisories/new) feature.
-
-### 3. Include the following information
-
-- Type of vulnerability (e.g., XSS, SQL injection, authentication bypass)
-- Full paths of source file(s) related to the vulnerability
-- Location of the affected code (tag/branch/commit or direct URL)
-- Step-by-step instructions to reproduce the issue
-- Proof-of-concept or exploit code (if possible)
-- Impact of the vulnerability
-
-### 4. Response timeline
-
-- **Initial Response**: Within 48 hours
-- **Status Update**: Within 7 days
-- **Fix Timeline**: Depends on severity (see below)
-
-### 5. Disclosure policy
-
-- We will acknowledge receipt of your report within 48 hours
-- We will keep you informed of our progress
-- We will notify you when the vulnerability is fixed
-- We will credit you in the security advisory (unless you prefer to remain anonymous)
-
-## Severity Levels
-
-### Critical
-- Remote code execution
-- SQL injection
-- Authentication bypass
-- Unauthorized access to sensitive data
-
-**Response Time**: 24-48 hours  
-**Fix Timeline**: 1-7 days
-
-### High
-- Privilege escalation
-- Cross-site scripting (XSS) with data exfiltration
-- CSRF with significant impact
-- Insecure direct object references
-
-**Response Time**: 48-72 hours  
-**Fix Timeline**: 1-2 weeks
-
-### Medium
-- Information disclosure
-- CSRF without significant impact
-- Rate limiting bypass
-- Missing security headers
-
-**Response Time**: 1 week  
-**Fix Timeline**: 2-4 weeks
-
-### Low
-- Best practice violations
-- Missing security headers (non-critical)
-- Information leakage (non-sensitive)
-
-**Response Time**: 2 weeks  
-**Fix Timeline**: 1-2 months
-
-## Security Best Practices
-
-### For Contributors
-
-- Never commit secrets, API keys, or credentials
-- Use environment variables for sensitive configuration
-- Review code for security issues before submitting PRs
-- Follow the principle of least privilege
-- Keep dependencies up to date
-
-### For Users
-
-- Keep your Supabase service role key secure and never expose it client-side
-- Use strong, unique passwords
-- Enable MFA when available
-- Regularly review and rotate API keys
-- Monitor your application logs for suspicious activity
-
-## Known Security Considerations
-
-### Service Role Keys
-
-**CRITICAL**: The `SUPABASE_SERVICE_ROLE_KEY` must NEVER be exposed to the client. It bypasses Row Level Security (RLS) and grants full database access.
-
-- ✅ Use `SUPABASE_SERVICE_ROLE_KEY` (server-only) in API routes
-- ❌ Never use `NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY` (this would expose it to clients)
-
-### Environment Variables
-
-All sensitive environment variables are documented in the README. Ensure:
-- `.env.local` is in `.gitignore`
-- Never commit `.env` files
-- Use secure secret management in production (e.g., Vercel Environment Variables)
-
-### Database Security
-
-- All tables use Row Level Security (RLS) policies
-- Service role key is only used in server-side API routes
-- User authentication is handled via Supabase Auth
-
-## Security Updates
-
-Security updates will be announced via:
-- GitHub Security Advisories
-- Release notes
-- Email notifications (for critical vulnerabilities)
-
-## Acknowledgments
-
-We appreciate the security research community's efforts to help keep our platform secure. Contributors who report valid security vulnerabilities will be credited (unless they prefer to remain anonymous).
+The security of our application, infrastructure, and user data is our highest priority. We appreciate the invaluable contributions of security researchers and engineers in maintaining a robust, trustworthy, and safe ecosystem.
 
 ---
 
-**Last Updated**: 2024
+## 1. Supported Versions
 
+We provide security patches, automated vulnerability scanning, and hotfixes exclusively for actively maintained releases.
+
+| Version | Supported | Security Maintenance Status |
+| :--- | :---: | :--- |
+| `main` / `latest` | :white_check_mark: | Active security updates & continuous integration scans |
+| `< latest` | :x: | End of Life (EOL) — Please upgrade to latest |
+
+---
+
+## 2. Reporting a Vulnerability
+
+If you believe you have discovered a security vulnerability or security bug, please report it immediately and responsibly.
+
+### Responsible Reporting Guidelines
+- **DO NOT** open public issues, discussions, or pull requests for security vulnerabilities.
+- **DO NOT** attempt to access, modify, or destroy user data or degrade system performance.
+- **DO NOT** execute denial-of-service (DoS/DDoS) attacks against production infrastructure.
+
+### Reporting Channels
+
+1. **GitHub Private Vulnerability Advisory (Recommended)**:
+   Submit an advisory report directly via [GitHub Security Advisories](https://github.com/rama730/nb-s/security/advisories/new).
+2. **Security Team Direct Contact**:
+   For sensitive or urgent disclosures, report via GitHub Private Vulnerability Reporting or reach out to repository administrators.
+
+### What to Include in Your Report
+
+To help us triage and resolve the issue quickly, please provide:
+- **Summary**: Concise description of the vulnerability and its potential impact.
+- **Type/CWE**: Classification (e.g., Broken Access Control, SQL Injection, RLS Bypass, SSRF, XSS).
+- **Environment**: Affected branch, commit hash, component, or URL endpoint.
+- **Reproduction Steps**: Detailed, minimal step-by-step reproduction instructions.
+- **Proof of Concept (PoC)**: Sample script, cURL command, or screenshots.
+- **Remediation Suggestions**: Any proposed patches or mitigation measures (if available).
+
+---
+
+## 3. Vulnerability Response & SLA Matrix
+
+All reports receive prompt attention according to our severity-based Service Level Agreement (SLA):
+
+| Severity | Example Scenarios | Initial Triage | Target Fix / Patch |
+| :--- | :--- | :---: | :---: |
+| **Critical** | RCE, SQLi, Auth Bypass, Direct DB credential leak, RLS circumvention | < 24 hours | 1 – 3 days |
+| **High** | Privilege Escalation, Sensitive Data Exposure, SSRF, Account Takeover | < 48 hours | 3 – 7 days |
+| **Medium** | Stored/Reflected XSS, CSRF with state impact, Rate limit evasion | < 72 hours | 1 – 2 weeks |
+| **Low / Informational** | Best practice deviation, verbose error messages, non-sensitive leakage | < 7 days | Next release cycle |
+
+---
+
+## 4. Coordinated Disclosure Process
+
+We follow standard Coordinated Vulnerability Disclosure (CVD):
+
+1. **Receipt & Acknowledgment**: We acknowledge receipt of your report within the SLA window.
+2. **Investigation & Triage**: Our security team validates the issue and assigns a severity rating (CVSS).
+3. **Patch Development & Testing**: A fix is developed in a private security branch.
+4. **Deployment & Verification**: The patch is deployed to staging and production environments.
+5. **Public Advisory & Credit**: A public advisory is published, and you will be credited in our Release Notes and Security Hall of Fame (unless anonymity is requested).
+
+---
+
+## 5. Architectural Security Guidelines (1M+ Scale Readiness)
+
+To ensure resilient and smooth operation under high concurrent traffic (1,000,000+ users), our architecture enforces strict security and performance standards:
+
+### 5.1 Identity & Database Access Control
+- **Strict Row-Level Security (RLS)**: Every Supabase / PostgreSQL table must have RLS enabled with explicit policies (`RESTRICTIVE` / `PERMISSIVE`).
+- **Service Role Key Isolation**:
+  - `SUPABASE_SERVICE_ROLE_KEY` must **never** be exposed to browser runtimes or prefixed with `NEXT_PUBLIC_`.
+  - Service role keys must only be utilized within isolated server-side processes or Edge Functions.
+- **Connection Pooler Protection**:
+  - Always route high-volume connections through Supavisor / PgBouncer with SSL enabled.
+  - Never commit pooler connection strings or raw database URIs to source control.
+
+### 5.2 Defense in Depth & High-Scale Infrastructure
+- **Rate Limiting & Abuse Prevention**: Edge rate limiting to prevent brute force, scraping, and resource exhaustion attacks.
+- **Zero-Trust Secret Management**:
+  - Secrets are managed via encrypted environment variables.
+  - Automated pre-commit hooks (`detect-secrets`, `check-env-files`) prevent credential leaks before commit.
+- **Strict Content Security Policy (CSP)**:
+  - Enforce modern HTTP security headers (`Strict-Transport-Security`, `X-Content-Type-Options`, `Content-Security-Policy`, `Referrer-Policy`).
+
+---
+
+## 6. Contributor Security Checklist
+
+Before opening a pull request, ensure:
+- [ ] No secrets, API keys, tokens, or private credentials exist in git commits or history.
+- [ ] `.env*` files (except `.env.example`) are excluded via `.gitignore`.
+- [ ] All database queries enforce parameterized bindings to prevent SQL injection.
+- [ ] Any new API endpoint validates authorization and input data schemas.
+- [ ] Pre-commit hooks pass cleanly (`pre-commit run --all-files`).
+
+---
+
+## 7. Security Advisories & History
+
+Historical security advisories and remediation actions are tracked under:
+- [GitHub Security Advisories](https://github.com/rama730/nb-s/security/advisories)
+- [`SECURITY_REMEDIATION.md`](./SECURITY_REMEDIATION.md) (Credential rotation & history purge guidance)
+
+---
+
+*Last Reviewed: October 2026*
