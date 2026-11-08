@@ -31,6 +31,7 @@
   - [Quality and Linting Scripts](#quality-and-linting-scripts)
   - [Test Suite](#test-suite)
   - [Pre-Commit Hooks Setup](#pre-commit-hooks-setup)
+- [NetworkBase High-EQ CLI & AI Agent Workflow](#networkbase-high-eq-cli--ai-agent-workflow)
 - [API Architecture and Routing](#api-architecture-and-routing)
   - [Standard API Response Envelope](#standard-api-response-envelope)
   - [Key API Endpoints](#key-api-endpoints)
@@ -253,6 +254,33 @@ pre-commit install
 
 # Manually execute against all files
 pre-commit run --all-files
+```
+
+---
+
+## NetworkBase High-EQ CLI & AI Agent Workflow
+
+NetworkBase ships with an interactive terminal CLI (`@networkbase/cli` / `nb`) and built-in Model Context Protocol (`MCP`) server for zero-friction workspace synchronization, sprint task tracking, and SHA-256 verified file versioning (`v1 -> v2 -> ...`).
+
+### One-Command Interactive Setup
+Run from any local project folder to authenticate via 1-click browser approval (`/authorize`) or Personal Access Token (`nb_pat_...`), link a workspace, and bind an active sprint task:
+
+```bash
+npx @networkbase/cli init
+# or when linked globally:
+nb init
+```
+
+### Core CLI Commands
+```bash
+nb                              # Launch interactive arrow-key Command Palette
+nb status                       # View signed-in account, linked workspace, and active task
+nb file ls                      # List remote workspace files and current version numbers
+nb pull README.md               # Fast 1-RTT download of remote file(s) from the workspace
+nb push README.md --deliverable # Fast 1-RTT atomic push, bump version (e.g. v13 -> v14), and classify role
+nb watch                        # Live debounced auto-sync watcher (0ms local SHA-256 diff + 1-RTT push)
+nb task list                    # List sprint tasks in the linked workspace
+nb mcp                          # Start MCP server over stdio for AI coding assistants
 ```
 
 ---
